@@ -1,0 +1,23 @@
+<div class="row">
+  <div ng-if="related.Response!=='False'">
+    <h4>Related Results:</h4><hr>
+    <ul class="rel-results">
+      <li ng-repeat="movie in related.Search">
+        <a href="#" id="{{ $index + 1 }}" ng-click="update(movie)">{{ movie.Title }}</a>, {{ movie.Year }}
+      </li>
+    </ul>
+  </hr>
+  </div>
+</div>
+
+<div class="row">
+  <div ng-if="related.Response!=='False'">
+    <h4>Related Results:</h4><hr>
+    <ul class="rel-results">
+      <li ng-repeat="movie in related.Search">
+        <a href="#" id="{{ $index + 1 }}" ng-click="update(movie)">{{ movie.Title }}</a>, {{ movie.Year }}
+      </li>
+    </ul>
+  </hr>
+  </div>
+</div>
