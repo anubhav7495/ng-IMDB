@@ -10,6 +10,7 @@ angular.module('myApp', [])
       $scope.episode;
       $scope.ID;
       $scope.Year = "";
+      var flag = false;
       fetch();
     }
 
@@ -21,14 +22,19 @@ angular.module('myApp', [])
     };
 
     function fetch(){
-      if(!$scope.episode) {
+      if(!flag) {
         $http.get("http://www.omdbapi.com/?t=" + $scope.search + "&y=" + $scope.Year + "&tomatoes=true&plot=full")
          .success(function(response){ $scope.details = response; });
       }
       else {
-        $http.get("http://www.omdbapi.com/?i=" + $scope.ID + "&tomatoes=true&plot=full")
-         .success(function(response){ $scope.details = response; });
-
+        if(!$scope.episode) {
+          $http.get("http://www.omdbapi.com/?i=" + $scope.ID + "&tomatoes=true&plot=full")
+           .success(function(response){ $scope.details = response; });
+        }
+        else {
+          $http.get("http://www.omdbapi.com/?t="+$scope.search+"&season="+$scope.season+"&episode="+$scope.episode+"&tomatoes=true&plot=full")
+           .success(function(response){ $scope.details = response; });
+        }
       }
 
       $http.get("http://www.omdbapi.com/?s=" + $scope.search)
@@ -40,10 +46,15 @@ angular.module('myApp', [])
     }
 
     $scope.update = function(data){
-      $scope.search = data.Title;
       if(data.Episode) {
         $scope.ID = data.imdbID;
-        $scope.episode = data.Episode;
+        $scope.episode = "";
+        flag = true;
+      }
+      else {
+        $scope.search = data.Title;
+        $scope.season = "";
+        flag = false;
       }
       $scope.change();
     };
