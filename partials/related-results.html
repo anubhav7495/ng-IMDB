@@ -1,17 +1,14 @@
-<div class="row">
-  <div ng-if="related.Response!=='False'">
-    <h4>Related Results:</h4><hr>
+<div ng-if="season" class="row animated bounceInDown">
+    <h4>Episodes:</h4><hr>
     <ul class="rel-results">
-      <li ng-repeat="movie in related.Search">
-        <a href="#" id="{{ $index + 1 }}" ng-click="update(movie)">{{ movie.Title }}</a>, {{ movie.Year }}
+      <li ng-repeat="data in ep.Episodes">
+        <a href="#" id="{{ $index + 1 }}" ng-click="update(data)">Ep {{ data.Episode }}: {{ data.Title }}</a>, {{ data.Released }}
       </li>
     </ul>
   </hr>
-  </div>
 </div>
 
-<div class="row">
-  <div ng-if="related.Response!=='False'">
+<div ng-if="related.Response!=='False'" class="row">
     <h4>Related Results:</h4><hr>
     <ul class="rel-results">
       <li ng-repeat="movie in related.Search">
@@ -19,5 +16,4 @@
       </li>
     </ul>
   </hr>
-  </div>
 </div>

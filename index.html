@@ -36,7 +36,7 @@
             <input type="text" ng-model="Year" ng-change="change()" onclick="select()" class="form-control" placeholder="Year"/>
           </div>
 
-          <div ng-show="(details.Type === 'series' || 'episode')" class="animated fadeIn">
+          <div ng-show="(details.Type !== 'movie')" class="animated fadeIn">
           <div class="col-md-2 imput-group input-group-lg">
             <input type="text" ng-model="season" ng-change="change()" onclick="select()" class="form-control" placeholder="Season"/>
           </div>

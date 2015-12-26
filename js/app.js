@@ -5,10 +5,11 @@ angular.module('myApp', [])
     var pendingTask;
 
     if($scope.search === undefined){
-      $scope.search = "Sherlock Holmes";
+      $scope.search = "Star Wars: The Force Awakens";
       $scope.season;
       $scope.episode;
-      $scope.Year;
+      $scope.ID;
+      $scope.Year = "";
       fetch();
     }
 
@@ -20,15 +21,30 @@ angular.module('myApp', [])
     };
 
     function fetch(){
-      $http.get("http://www.omdbapi.com/?t=" + $scope.search + "&tomatoes=true&plot=full")
-       .success(function(response){ $scope.details = response; });
+      if(!$scope.episode) {
+        $http.get("http://www.omdbapi.com/?t=" + $scope.search + "&y=" + $scope.Year + "&tomatoes=true&plot=full")
+         .success(function(response){ $scope.details = response; });
+      }
+      else {
+        $http.get("http://www.omdbapi.com/?i=" + $scope.ID + "&tomatoes=true&plot=full")
+         .success(function(response){ $scope.details = response; });
+
+      }
 
       $http.get("http://www.omdbapi.com/?s=" + $scope.search)
        .success(function(response){  $scope.related = response; });
+
+      if($scope.season)
+        $http.get("http://www.omdbapi.com/?t=" + $scope.search + "&season=" + $scope.season)
+          .success(function(response){ $scope.ep = response; });
     }
 
-    $scope.update = function(movie){
-      $scope.search = movie.Title;
+    $scope.update = function(data){
+      $scope.search = data.Title;
+      if(data.Episode) {
+        $scope.ID = data.imdbID;
+        $scope.episode = data.Episode;
+      }
       $scope.change();
     };
 
