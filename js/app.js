@@ -23,8 +23,14 @@ angular.module('myApp', [])
 
     function fetch(){
       if(!flag) {
-        $http.get("http://www.omdbapi.com/?t=" + $scope.search + "&y=" + $scope.Year + "&tomatoes=true&plot=full")
-         .success(function(response){ $scope.details = response; });
+        if($scope.season && $scope.episode) {
+          $http.get("http://www.omdbapi.com/?t="+$scope.search+"&season="+$scope.season+"&episode="+$scope.episode+"&tomatoes=true&plot=full")
+            .success(function(response){ $scope.details = response; });
+        }
+        else {
+          $http.get("http://www.omdbapi.com/?t=" + $scope.search + "&y=" + $scope.Year + "&tomatoes=true&plot=full")
+           .success(function(response){ $scope.details = response; });
+        }
       }
       else {
         if(!$scope.episode) {
