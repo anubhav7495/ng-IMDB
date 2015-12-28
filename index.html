@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp" ng-controller="MovieController">
+  <head>
+    <title>{{details.Title || 'ng-IMDB'}}</title>
+    <link rel="stylesheet" href="build/css/animate.min.css">
+    <link rel="stylesheet" href="build/css/style.css">
+    <link rel="stylesheet" href="build/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+  </head>
+
+  <body>
+    <div class="container-fluid outerdiv">
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#"><b>ng-IMDB</b> <span class="span-style">Movies & TV Shows</span></a>
+          </div>
+        </div>
+      </nav>
+
+      <noscript>
+        <div class="nojs">Javascript is either disabled or not supported in your browser. Please enable it or use a Javascript enabled browser.</div>
+      </noscript>
+
+      <div class="animated bounceInDown">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="input-group input-group-lg">
+              <span class="input-group-addon bar-style"><i class="glyphicon glyphicon-search"></i></span>
+              <input type="text" ng-model="search" ng-change="change()" onclick="select()" class="form-control" placeholder="Full Movie or Series name" autofocus />
+            </div>
+          </div>
+
+          <div class="col-md-2 imput-group input-group-lg">
+            <input type="text" ng-model="Year" ng-change="change()" onclick="select()" class="form-control" placeholder="Year"/>
+          </div>
+
+          <div ng-show="(details.Type !== 'movie')" class="animated fadeIn">
+          <div class="col-md-2 imput-group input-group-lg">
+            <input type="text" ng-model="season" ng-change="change()" onclick="select()" class="form-control" placeholder="Season"/>
+          </div>
+
+          <div class="col-md-2 imput-group input-group-lg">
+            <input type="text" ng-model="episode" ng-change="change()" onclick="select()" class="form-control" placeholder="Episode"/>
+          </div>
+
+        </div>
+        </div>
+
+        <div class="row">
+          <div id="main-info" ng-include="'build/partials/main-info.html'" class="col-md-8"></div>
+
+          <div id="related-results" ng-include="'build/partials/related-results.html'" class="col-md-4 animated bounce related-results"></div>
+        </div>
+    </div>
+    </div>
+
+    <script src="build/js/angular.min.js"></script>
+    <script src="build/js/app.js"></script>
+  </body>
+</html>
