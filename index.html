@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp" ng-controller="MovieController">
   <head>
-    <title>{{details.Title || 'ng-IMDB'}}</title>
+  <style>
+  [ng\: cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x- ng-cloak {
+    display: none !important;
+  }
+  </style>
+    <title ng-cloak>{{details.Title || 'ng-IMDB'}}</title>
     <link rel="stylesheet" href="build/css/animate.min.css">
     <link rel="stylesheet" href="build/css/style.css">
     <link rel="stylesheet" href="build/css/bootstrap.min.css">
@@ -23,7 +28,7 @@
         <div class="nojs">Javascript is either disabled or not supported in your browser. Please enable it or use a Javascript enabled browser.</div>
       </noscript>
 
-      <div class="animated bounceInDown">
+      <div class="animated bounceInDown" ng-cloak>
         <div class="row">
           <div class="col-md-4">
             <div class="input-group input-group-lg">
