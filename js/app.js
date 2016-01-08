@@ -1,5 +1,5 @@
 angular.module('myApp', ['ui.bootstrap'])
-  .controller('MovieController', function($scope, imdbService) {
+  .controller('MovieController', ["$scope", "imdbService", function($scope, imdbService) {
     var paramObj = {};
     var pendingTask;
 
@@ -14,7 +14,7 @@ angular.module('myApp', ['ui.bootstrap'])
         t: $scope.search,
         season: $scope.season,
         plot: "full"
-      }
+      };
 
       fetch(paramObj);
     }
@@ -24,7 +24,7 @@ angular.module('myApp', ['ui.bootstrap'])
           return {
             list : item,
             suggest: item.Title + " " + item.Year
-          }
+          };
         });
       });
     };
@@ -37,20 +37,20 @@ angular.module('myApp', ['ui.bootstrap'])
             season: $scope.season,
             episode: $scope.episode,
             plot: "full"
-          }
+          };
         }
         else {
           paramObj = {
             t: $scope.search,
             plot: "full"
-          }
+          };
         }
       }
       else {
         paramObj = {
           i: $scope.ID,
           plot: "full"
-        }
+        };
       }
       imdbService.events(paramObj).success(function(resp) { $scope.details = resp; });
       $scope.ID = "";
@@ -60,7 +60,7 @@ angular.module('myApp', ['ui.bootstrap'])
           t: $scope.search,
           season: $scope.season,
           plot: "full"
-        }
+        };
         imdbService.events(paramObj)
           .success(function(resp) { $scope.ep = resp; });
       }
@@ -99,4 +99,4 @@ angular.module('myApp', ['ui.bootstrap'])
     $scope.select = function(){
       this.setSelectionRange(0, this.value.length);
     };
-  });
+  }]);

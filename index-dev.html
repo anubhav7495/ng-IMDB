@@ -25,6 +25,7 @@
             <input type="text" ng-model="async" onclick="select()" class="form-control" placeholder="Movie or TV Series" uib-typeahead="result as result.suggest for result in getSuggest($viewValue)" typeahead-min-length="3" autofocus>
           </div>
         </div>
+        <div ng-show="(details.Type !== 'movie')" class="animated fadeIn">
         <div class="col-md-2">
           <div class="input-group input-group-lg">
             <input type="text" ng-model="season" ng-change="change()" onclick="select()" class="form-control" placeholder="Season" style="border-radius: 6px;">
@@ -34,6 +35,7 @@
           <div class="input-group input-group-lg">
             <input type="text" ng-model="episode" ng-change="change()" onclick="select()" class="form-control" placeholder="Episode" style="border-radius: 6px;">
           </div>
+        </div>
         </div>
       </div>
       <div class="row-top">
@@ -51,7 +53,7 @@
               </div>
               <div class="col-md-9">
                 <div class="row">
-                  <p class="title"><span id="name">{{ details.Title }}</span>, {{ details.Year }}</p>
+                  <p class="title"><span class="name">{{ details.Title }}</span>, {{ details.Year }}</p>
                   <span class="glyphicon glyphicon-star logo animated flip"></span>
                   <p class="rating">{{ details.imdbRating }}/10</p>
                 </div>

@@ -16,7 +16,7 @@ body {
   float: left;
   margin-bottom: 0;
 }
-#name {
+.name {
   font-size: 22px;
 }
 .rating {
@@ -65,8 +65,8 @@ li {
 }
 .input-group .form-control:not(:first-child):not(:last-child) {
     border-radius: 6px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 .dropdown-menu {
   width: 92%;

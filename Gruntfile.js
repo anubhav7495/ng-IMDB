@@ -31,7 +31,7 @@ module.exports = function(grunt) {
         dest: 'build/js/app.js'
       }
     },
-    htmlmin: {
+    /*htmlmin: {
       build: {
         options: {
           removeComments: true,
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
           'build/partials/related-results.html': 'partials/related-results.html'
         }
       }
-    },
+    },*/
     cssmin: {
       target: {
         files: [{
@@ -73,6 +73,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
 
-  grunt.registerTask('default', ['copy', 'concat', 'uglify', 'htmlmin', 'cssmin']);
+  grunt.registerTask('default', ['copy', 'ngAnnotate', 'concat', 'uglify', 'cssmin']);
   grunt.registerTask('lint', ['jshint', 'csslint']);
 };
