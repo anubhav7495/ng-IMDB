@@ -1,67 +1,92 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp" ng-controller="MovieController">
+<html ng-app="myApp">
   <head>
-  <style>
-  [ng\: cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x- ng-cloak {
-    display: none !important;
-  }
-  </style>
-    <title ng-cloak>{{details.Title || 'ng-IMDB'}}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="build/css/bootstrap.min.css">
     <link rel="stylesheet" href="build/css/animate.min.css">
     <link rel="stylesheet" href="build/css/style.css">
-    <link rel="stylesheet" href="build/css/bootstrap.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="utf-8">
+    <style>[ng-cloak] { display: none; }</style>
+    <title>ng-IMDb</title>
   </head>
-
-  <body>
-    <div class="container-fluid outerdiv">
-      <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#"><b>ng-IMDB</b> <span class="span-style">Movies & TV Shows</span></a>
+  <body ng-controller="MovieController">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#" style="margin-left: -80px;"><b>ng-IMDb</b> <span>Movies & TV shows</span></a>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid" ng-cloak>
+      <div class="row row-top animated bounceInDown">
+        <div class="col-md-6">
+          <div class="input-group input-group-lg">
+            <span class="input-group-addon bar-style"><i class="glyphicon glyphicon-search"></i></span>
+            <input type="text" ng-model="async" onclick="select()" class="form-control" placeholder="Movie or TV Series" uib-typeahead="result as result.suggest for result in getSuggest($viewValue)" typeahead-min-length="3" autofocus>
           </div>
         </div>
-      </nav>
-
-      <noscript>
-        <div class="nojs">Javascript is either disabled or not supported in your browser. Please enable it or use a Javascript enabled browser.</div>
-      </noscript>
-
-      <div class="animated bounceInDown" ng-cloak>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="input-group input-group-lg">
-              <span class="input-group-addon bar-style"><i class="glyphicon glyphicon-search"></i></span>
-              <input type="text" ng-model="search" ng-change="change()" onclick="select()" class="form-control" placeholder="Full Movie or Series name" autofocus />
+        <div ng-show="(details.Type !== 'movie')" class="animated fadeIn">
+        <div class="col-md-2">
+          <div class="input-group input-group-lg">
+            <input type="text" ng-model="season" ng-change="change()" onclick="select()" class="form-control" placeholder="Season" style="border-radius: 6px;">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="input-group input-group-lg">
+            <input type="text" ng-model="episode" ng-change="change()" onclick="select()" class="form-control" placeholder="Episode" style="border-radius: 6px;">
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="row-top">
+        <div class="loading-container" ng-if="!details">
+          <div class="loading"></div>
+            <div id="loading-text">loading</div>
+        </div>
+        <div class="col-md-8 index" style="padding-left: 0px;">
+          <div class="animated tada text-center" ng-if="details.Response === 'False'">
+            <h2>No Results Found</h2>
+          </div>
+          <div class="animated bounceInDown" ng-if="details.Response === 'True'">
+              <div class="col-md-3">
+                <img ng-src="{{ details.Poster=='N/A' ? 'images/na.png' : details.Poster }}" class="img-responsive thumbnail animated flip poster"/>
+              </div>
+              <div class="col-md-9">
+                <div class="row">
+                  <p class="title"><span class="name">{{ details.Title }}</span>, {{ details.Year }}</p>
+                  <span class="glyphicon glyphicon-star logo animated flip"></span>
+                  <p class="rating">{{ details.imdbRating }}/10</p>
+                </div>
+                <div class="row">
+                  <div class="info"><strong>Released on:</strong> {{ details.Released }} <strong>|</strong> <strong>Runtime:</strong> ({{ details.Runtime }}) </div>
+                  <div class="info"><strong>Genre:</strong> {{ details.Genre }} <strong>|</strong> <strong>Rated:</strong> {{ details.Rated }} <strong>|</strong> <strong>Metascore:</strong> {{ details.Metascore }}</div>
+                </div>
+              </div>
+            <p class="plot"><strong>Plot:</strong> {{ details.Plot }}</p>
+            <div class="row" style="padding: 2px 15px;">
+              <div class="inner"><span class="label label-primary">Actors :</span> {{ details.Actors }}</div>
+              <div class="inner"><span class="label label-primary">Writers :</span> {{ details.Writer }}</div>
+              <div class="inner"><span class="label label-primary">Directors :</span> {{ details.Director }}</div>
             </div>
           </div>
-
-          <div class="col-md-2 imput-group input-group-lg">
-            <input type="text" ng-model="Year" ng-change="change()" onclick="select()" class="form-control" placeholder="Year"/>
-          </div>
-
-          <div ng-show="(details.Type !== 'movie')" class="animated fadeIn">
-          <div class="col-md-2 imput-group input-group-lg">
-            <input type="text" ng-model="season" ng-change="change()" onclick="select()" class="form-control" placeholder="Season"/>
-          </div>
-
-          <div class="col-md-2 imput-group input-group-lg">
-            <input type="text" ng-model="episode" ng-change="change()" onclick="select()" class="form-control" placeholder="Episode"/>
-          </div>
-
         </div>
+        <div class="col-md-4" style="padding-right: 0;">
+          <div ng-show="season" class="row animated bounceInDown">
+            <div class="panel panel-primary">
+              <div class="panel-heading">Episode List</div>
+              <ul>
+                <li ng-repeat="data in ep.Episodes track by $index">
+                  <a href="#" ng-click="update(data)">Ep {{ data.Episode }}: {{ data.Title }}, {{ data.Released }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
-
-        <div class="row">
-          <div id="main-info" ng-include="'build/partials/main-info.html'" class="col-md-8"></div>
-
-          <div id="related-results" ng-include="'build/partials/related-results.html'" class="col-md-4 animated bounce related-results"></div>
-        </div>
+      </div>
     </div>
-    </div>
-
     <script src="build/js/angular.min.js"></script>
+    <script src="build/js/ui-bootstrap-custom-tpls-0.14.3.min.js"></script>
     <script src="build/js/app.js"></script>
+    <script src="build/js/imdbService.js"></script>
   </body>
 </html>
