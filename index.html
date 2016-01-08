@@ -9,7 +9,7 @@
     <style>[ng-cloak] { display: none; }</style>
     <title>ng-IMDb</title>
   </head>
-  <body ng-controller="MovieController">
+  <body ng-controller="MovieController" ng-cloak>
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -17,7 +17,7 @@
         </div>
       </div>
     </nav>
-    <div class="container-fluid" ng-cloak>
+    <div class="container-fluid">
       <div class="row row-top animated bounceInDown">
         <div class="col-md-6">
           <div class="input-group input-group-lg">
@@ -49,7 +49,7 @@
           </div>
           <div class="animated bounceInDown" ng-if="details.Response === 'True'">
               <div class="col-md-3">
-                <img ng-src="{{ details.Poster=='N/A' ? 'images/na.png' : details.Poster }}" class="img-responsive thumbnail animated flip poster"/>
+                <img ng-src="{{ details.Poster=='N/A' ? 'build/images/na.png' : details.Poster }}" class="img-responsive thumbnail animated flip poster"/>
               </div>
               <div class="col-md-9">
                 <div class="row">
