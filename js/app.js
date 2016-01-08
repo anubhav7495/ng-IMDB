@@ -1,17 +1,69 @@
-
-angular.module('myApp', [])
-  .controller('MovieController', ["$scope", "imdbService", function($scope, imdbService){
+angular.module('myApp', ['ui.bootstrap'])
+  .controller('MovieController', function($scope, imdbService) {
+    var paramObj = {};
     var pendingTask;
-    var path;
 
-    if($scope.search === undefined){
-      $scope.search = "Star Wars: The Force Awakens";
-      $scope.Year = "";
-      $scope.season = "";
+    if($scope.search === undefined) {
+      $scope.async = "Game of thrones";
+      $scope.search = "Game of thrones";
+      $scope.season = "1";
       $scope.episode = "";
       $scope.ID = "";
 
-      fetch();
+      paramObj = {
+        t: $scope.search,
+        season: $scope.season,
+        plot: "full"
+      }
+
+      fetch(paramObj);
+    }
+    $scope.getSuggest = function(val) {
+      return imdbService.events({ s: val }).then(function(response) {
+        return response.data.Search.map(function(item){
+          return {
+            list : item,
+            suggest: item.Title + " " + item.Year
+          }
+        });
+      });
+    };
+
+    function fetch(paramObj) {
+      if(!$scope.ID) {
+        if($scope.season && $scope.episode) {
+          paramObj = {
+            t: $scope.search,
+            season: $scope.season,
+            episode: $scope.episode,
+            plot: "full"
+          }
+        }
+        else {
+          paramObj = {
+            t: $scope.search,
+            plot: "full"
+          }
+        }
+      }
+      else {
+        paramObj = {
+          i: $scope.ID,
+          plot: "full"
+        }
+      }
+      imdbService.events(paramObj).success(function(resp) { $scope.details = resp; });
+      $scope.ID = "";
+
+      if($scope.season) {
+        paramObj = {
+          t: $scope.search,
+          season: $scope.season,
+          plot: "full"
+        }
+        imdbService.events(paramObj)
+          .success(function(resp) { $scope.ep = resp; });
+      }
     }
 
     $scope.change = function(){
@@ -21,29 +73,17 @@ angular.module('myApp', [])
       pendingTask = setTimeout(fetch, 800);
     };
 
-    function fetch() {
-      if(!$scope.ID) {
-        if($scope.season && $scope.episode) {
-          path = "/?t="+$scope.search+"&season="+$scope.season+"&episode="+$scope.episode+"&tomatoes=true&plot=full";
-        }
-        else {
-          path = "/?t="+$scope.search+"&y="+$scope.Year+"&tomatoes=true&plot=full";
-        }
+    $scope.$watch('async', function() {
+      if(!$scope.async) {
+        $scope.details = null;
+        $scope.season = $scope.episode = null;
       }
       else {
-        path = "/?i="+$scope.ID+"&tomatoes=true&plot=full";
+        $scope.search = $scope.async.list.Title;
+        $scope.season = $scope.episode = null;
+        setTimeout(fetch(paramObj), 800);
       }
-      imdbService.events(path).success(function(resp) { $scope.details = resp; });
-      $scope.ID = "";
-
-      imdbService.events("/?s="+$scope.search)
-        .success(function(resp) { $scope.related = resp; });
-
-      if($scope.season) {
-        imdbService.events("/?t="+$scope.search+"&season="+$scope.season)
-          .success(function(resp) { $scope.ep = resp; });
-      }
-    }
+    }, true);
 
     $scope.update = function(data){
       if(data.Episode) {
@@ -59,5 +99,4 @@ angular.module('myApp', [])
     $scope.select = function(){
       this.setSelectionRange(0, this.value.length);
     };
-
-  }]);
+  });

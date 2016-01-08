@@ -1,18 +1,18 @@
 
 angular.module('myApp')
   .factory('imdbService', ["$http", function($http) {
-    var omdbUrl = "http://www.omdbapi.com";
 
-    var runUserRequest = function(path) {
+    var runUserRequest = function(paramObj) {
       return $http({
         method: 'GET',
-        url: omdbUrl + path
+        url: "http://www.omdbapi.com/",
+        params: paramObj
       });
     };
 
     return {
-      events: function(path) {
-        return runUserRequest(path);
+      events: function(paramObj) {
+        return runUserRequest(paramObj);
       }
     };
   }]);
