@@ -42,6 +42,7 @@ angular.module('myApp', ['ui.bootstrap'])
         else {
           paramObj = {
             t: $scope.search,
+            y: $scope.year,
             plot: "full"
           };
         }
@@ -80,6 +81,7 @@ angular.module('myApp', ['ui.bootstrap'])
       }
       else {
         $scope.search = $scope.async.list.Title;
+        $scope.year = $scope.async.list.Year.substring(0,4);
         $scope.season = $scope.episode = null;
         setTimeout(fetch(paramObj), 800);
       }

@@ -4,7 +4,7 @@ body {
   background-attachment: fixed;
   color: #C0C0C0;
 }
-.container-fluid {
+.contain-pad {
   padding: 50px 20px;
 }
 .row-top {
